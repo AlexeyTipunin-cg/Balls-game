@@ -29,7 +29,7 @@ namespace Code
             starsPrortotype = Resources.Load<ParticleSystem>("StarsEffect");
         }
         
-        public UniversalBubble(int row, int col, int type) : base(row, col, type)
+        public UniversalBubble( BallsTypes type) : base(type)
         {
             _stars = GameObject.Instantiate(starsPrortotype);
         }
@@ -39,13 +39,41 @@ namespace Code
         {
             _circle = new Circle(radius ,x, y, color, parent, _material );
             _circle.draw();
-            _stars.transform.SetParent(_circle.gameObj.transform);
-            _stars.transform.localPosition = new Vector3();
+            _circle.attachParticles(_stars);
+        }
+
+        private bool isActive;
+        public override bool setActive
+        {
+            get { return isActive; }
+            set
+            {
+                if (isActive != value)
+                {
+                    if (!value)
+                    {
+                        GameObjectsPool.addToPool(this);
+                        _stars.Stop();
+                    }
+
+                    if (value)
+                    {
+                        _stars.Play();
+                    }
+
+
+                    isRemoved = !value;
+                    _circle.setActive = value;
+                    isActive = value;
+                }
+            }
         }
 
         public override bool needMatchType
         {
             get { return false; }
         }
+        
+        
     }
 }

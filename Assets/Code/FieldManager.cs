@@ -41,7 +41,7 @@ namespace Code
 
         public static int maxHeight;
 
-        public GameObject gamePivot;
+        public static GameObject gamePivot;
         
         private void populateField()
         {
@@ -56,7 +56,7 @@ namespace Code
 
             for (int i = 0; i < ballsNum; i++)
             {
-                int type = rand.Next(1, 4);
+                BallsTypes type = (BallsTypes)rand.Next(1, 4);
 
                 int row = startRow + i / FIELD_WIDTH;
                 int col = i + startRow * FIELD_WIDTH - FIELD_WIDTH * row;
@@ -73,10 +73,10 @@ namespace Code
         {
             foreach (KeyValuePair<int,IGameObject> idToObj in field)
             {
-                idToObj.Value.removeObject();
+                idToObj.Value.setActive = false;
             }
 
-            UnityEngine.Object.Destroy(currentPlayerBall.view.gameObj);
+            currentPlayerBall.setActive = false;
             currentPlayerBall = null;
             field.Clear();
             tempField.Clear();
@@ -145,13 +145,10 @@ namespace Code
 
         }
 
-        public void createGameObject(int row, int col, int type)
+        public void createGameObject(int row, int col, BallsTypes type)
         {
-            Vector3 pos = findCoordsByRowCol(row, col);
-            Color32 color = this.color(type);
 
-            IGameObject gameObject = new Bubble(row, col, type);
-            gameObject.createShape(CELL_WIDTH * 0.5f , pos.x, pos.y, color, gamePivot);
+            IGameObject gameObject = GameObjectsPool.getOrCreateFromPool( type, row, col);
             field.Add(gameObject.id, gameObject);
 
             if (gameObject.row > LAST_VISIBLE_ROW)
@@ -161,7 +158,7 @@ namespace Code
         }
 
 
-        public Vector3 findCoordsByRowCol(int row, int col)
+        public static Vector3 findCoordsByRowCol(int row, int col)
         {
             Vector3 pos;
             pos.z = 0;
@@ -177,7 +174,7 @@ namespace Code
         }
        
 
-        private Vector3 findCoordsForPlayer()
+        public static Vector3 findCoordsForPlayer()
         {
             Vector3 pos;
             pos.z = 0;
@@ -193,39 +190,25 @@ namespace Code
 
         public void createPlayerBubble()
         {
-            Vector3 pos = findCoordsForPlayer();
             Random rand = new Random();
-            int type = rand.Next(1, 5);
-            
-            
-            IGameObject gameObject = chooseBubbleType(type);
-            gameObject.createShape(CELL_WIDTH * 0.5f ,pos.x, pos.y, color(type), gamePivot);
+            BallsTypes type = (BallsTypes) rand.Next(1, 5);
+
+            IGameObject gameObject = GameObjectsPool.getOrCreateFromPool(type, isPlayer: true);
 
             currentPlayerBall = gameObject;
         }
 
-        private IGameObject chooseBubbleType(int type)
-        {   
+        private Color getColor(BallsTypes type)
+        {
             switch (type)
             {
-                case 4:
-                    return new UniversalBubble(0, 0, type);
-                default:
-                    return new Bubble(0, 0, type);
-            }
-        }
-
-        private Color color(int color)
-        {
-            switch (color)
-            {
-                case 1:
+                case BallsTypes.Yellow:
                     return Color.yellow;
-                case 2:
+                case BallsTypes.Red:
                     return Color.red;
-                case 3:
+                case BallsTypes.Green:
                     return Color.green;
-                case 4:
+                case BallsTypes.Universal:
                     return Color.black;
                 default:
                     return Color.black;
@@ -356,5 +339,13 @@ namespace Code
 
             return minY;
         }
+    }
+
+    public enum BallsTypes
+    {
+        Yellow = 1,
+        Red = 2,
+        Green = 3,
+        Universal = 4
     }
 }

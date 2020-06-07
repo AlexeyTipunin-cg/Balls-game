@@ -56,7 +56,7 @@ namespace Code
             }
 
 
-            Vector3 playerEndAnimation = FieldManager.Instance.findCoordsByRowCol((int) gridPosition.y, (int) gridPosition.x);
+            Vector3 playerEndAnimation = FieldManager.findCoordsByRowCol((int) gridPosition.y, (int) gridPosition.x);
             playerAnimation.Enqueue(playerEndAnimation);
 
             return bubblesToDelete;
@@ -94,7 +94,7 @@ namespace Code
                     continue;
                 }
 
-                Vector3 viewCoord = FieldManager.Instance.findCoordsByRowCol(obj.row, obj.col);
+                Vector3 viewCoord = FieldManager.findCoordsByRowCol(obj.row, obj.col);
                 if ((viewCoord.y - y) * direction < 0)
                 {
                     continue;

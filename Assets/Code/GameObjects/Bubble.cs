@@ -8,7 +8,7 @@ namespace Code
         private int _id;
         private int _row;
         private int _col;
-        private int _type;
+        private BallsTypes _type;
         private IAnimation _animation;
         protected IShape _circle;
         
@@ -32,7 +32,7 @@ namespace Code
             get { return _id; }
         }
 
-        public int type
+        public BallsTypes type
         {
             get { return _type; }
         }
@@ -62,10 +62,8 @@ namespace Code
             }
         }
 
-        public Bubble(int row, int col, int type)
+        public Bubble(BallsTypes type)
         {
-            _row = row;
-            _col = col;
             _type = type;
 
             _id = GetHashCode();
@@ -77,11 +75,33 @@ namespace Code
             _circle.draw();
         }
 
-        public void removeObject()
+        private bool isActive;
+
+        public virtual bool setActive
         {
-            isRemoved = true;
-            _circle.destroy();
+            get
+            {
+                return isActive;
+            }
+            set
+            {
+                if (isActive  != value)
+                {
+                    if (!value)
+                    {
+                        GameObjectsPool.addToPool(this);
+                    }
+
+                    isRemoved = !value;
+                    _circle.setActive = value;
+                    isActive = value;   
+                }
+            }
         }
-        
+
+        public void rotate(Vector3 rotate)
+        {
+            _circle.rotate(rotate);
+        }
     }
 }

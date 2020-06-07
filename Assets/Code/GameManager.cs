@@ -298,14 +298,12 @@ namespace Code
         
         public void removeCluster(List<IGameObject> gameObjects)
         {
-            if (gameObjects.Count > 1)
-            {
+
                 foreach (IGameObject gameObject in gameObjects)
                 {
-                        gameObject.removeObject();
+                        gameObject.setActive = false;
                         FieldManager.Instance.field.Remove(gameObject.id);
                 }
-            }
 
 
         }

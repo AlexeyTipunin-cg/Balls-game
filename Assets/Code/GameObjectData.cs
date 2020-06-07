@@ -6,8 +6,8 @@ namespace Code
     {
         public int row;
         public int col;
-        public int type;
-        public GameObjectData(int row, int col, int type)
+        public BallsTypes type;
+        public GameObjectData(int row, int col, BallsTypes type)
         {
             this.row = row;
             this.col = col;

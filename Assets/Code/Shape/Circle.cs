@@ -105,26 +105,33 @@ namespace Code
 
         public void destroy()
         {
-            _circle.SetActive(false);
+            _circle.GetComponent<Renderer>().enabled = false;
         }
 
         private bool _active = true;
-        public bool setActive
+        public virtual bool setActive
         {
             get { return _active;}
             set
             {
                 if (_active != value)
                 {
-                    _circle.SetActive(value);
+                    _circle.GetComponent<MeshRenderer>().enabled = value;
                     _active = value;
                 }
             }
         }
 
-        public GameObject gameObj
+        public void attachParticles(ParticleSystem child)
         {
-            get { return _circle; }
+            Transform partciles = child.transform;
+            partciles.SetParent(_circle.transform);
+            partciles.localPosition = new Vector3();
+        }
+
+        public void rotate(Vector3 angle)
+        {
+            _circle.transform.rotation = Quaternion.Euler(angle);
         }
 
         public float x { get; }

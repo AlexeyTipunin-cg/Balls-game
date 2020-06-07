@@ -56,12 +56,12 @@ namespace Code
                     if (target != info.obj)
                     {
 
-                        if (info.obj.view.gameObj.GetComponent<MeshRenderer>().enabled)
+                        if (info.obj.view.setActive)
                         {
                             if (tween.percentage >= info.percents)
                             {
                                 Debug.Log(new Vector2(tween.percentage, info.percents));
-                                info.obj.view.gameObj.GetComponent<MeshRenderer>().enabled = false;
+                                info.obj.view.setActive = false;
                             }
                         }
                     }

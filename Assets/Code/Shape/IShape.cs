@@ -9,6 +9,7 @@ namespace Code
         Vector3 localPosition { get; set; }
         void destroy();
         bool setActive { get; set; }
-        GameObject gameObj { get; }
+        void attachParticles(ParticleSystem child);
+        void rotate(Vector3 angle);
     }
 }

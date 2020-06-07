@@ -122,6 +122,16 @@ namespace Code
         }
 
         public bool setActive { get; set; }
+        public void attachParticles(ParticleSystem child)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void rotate(Vector3 angle)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public GameObject gameObj { get; }
 
         public Vector3 pivotPoint

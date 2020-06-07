@@ -38,7 +38,7 @@ namespace Code
 
             List<(IGameObject obj, float percents)> bubblesToDelete;
 
-            if (playerBubble.type == 4)
+            if (playerBubble.type == BallsTypes.Universal)
             {
                 bubblesToDelete = UniversalBallController.OnPlayerShot(playerBubble, arrowAngle);
             }
@@ -59,7 +59,7 @@ namespace Code
                 {
                     hasWon = false;
                     GameLoader.uiController.openWindow();
-                    ;
+                    PlayerPrefs.SetInt("Score", totalScore);
                     return;
                 }
 
@@ -67,6 +67,7 @@ namespace Code
                 {
                     hasWon = true;
                     GameLoader.uiController.openWindow();
+                    PlayerPrefs.SetInt("Score", totalScore);
                     return;
                 }
 
@@ -149,7 +150,7 @@ namespace Code
                 }
 
                 obj.row -= dY;
-                Vector3 coords = FieldManager.Instance.findCoordsByRowCol(obj.row, obj.col) + new Vector3(0, 0, 0.5f);
+                Vector3 coords = FieldManager.findCoordsByRowCol(obj.row, obj.col) + new Vector3(0, 0, 0.5f);
                 obj.animation.bubbleAnimation.Enqueue(coords);
             }
 
@@ -187,7 +188,7 @@ namespace Code
                 
                 if (!SITween.hasAnyTweening())
                 {
-                    FieldManager.Instance.currentPlayerBall.view.gameObj.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+                    FieldManager.Instance.currentPlayerBall.rotate(new Vector3(0, 0, angle - 90));
                 }
             }
 

@@ -23,8 +23,6 @@ namespace Code
             playerBall.col = (int) gridPosition.x;
             playerBall.row = (int) gridPosition.y;
 
-            FieldManager.Instance.field.Add(playerBall.id, playerBall);
-
             List<(IGameObject obj, float percents)> bubblesToDelete = new List<(IGameObject obj, float percents)>();
 
             int currentHeight = FieldManager.Instance.findCurrentMaxHeight();
@@ -51,7 +49,7 @@ namespace Code
             }
 
 
-            Vector3 playerEndAnimation = FieldManager.Instance.findCoordsByRowCol((int) gridPosition.y, (int) gridPosition.x);
+            Vector3 playerEndAnimation = FieldManager.findCoordsByRowCol((int) gridPosition.y, (int) gridPosition.x);
             playerAnimation.Enqueue(playerEndAnimation);
 
             return bubblesToDelete;
@@ -151,7 +149,7 @@ namespace Code
                     continue;
                 }
 
-                Vector3 viewCoord = FieldManager.Instance.findCoordsByRowCol(obj.row, obj.col);
+                Vector3 viewCoord = FieldManager.findCoordsByRowCol(obj.row, obj.col);
                 if ((viewCoord.y - y) * direction < 0)
                 {
                     continue;

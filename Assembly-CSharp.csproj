@@ -13,7 +13,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{2B05F405-4855-2771-4304-2F9D0B41BCC3}</ProjectGuid>
+    <ProjectGuid>{F28130E0-86D5-25A7-CA83-613E430529FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -67,6 +67,7 @@
     <Compile Include="Assets\Code\GameManager.cs" />
     <Compile Include="Assets\Code\GameObjectData.cs" />
     <Compile Include="Assets\Code\GameObjects\Bubble.cs" />
+    <Compile Include="Assets\Code\GameObjects\GameObjectsPool.cs" />
     <Compile Include="Assets\Code\GameObjects\IGameObject.cs" />
     <Compile Include="Assets\Code\GameObjects\UniversalBubble.cs" />
     <Compile Include="Assets\Code\PointerEventsDispatcher.cs" />
@@ -86,21 +87,22 @@
     <Compile Include="Assets\Code\UnityHelper.cs" />
     <Compile Include="Assets\Code\UniversalBallController.cs" />
     <None Include="Assets\Code\AllColorsShader.shader" />
+    <None Include="Assets\Code\WaterShader.shader" />
     <None Include="Assets\Code\Outline.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.15f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -304,13 +306,13 @@
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.15f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>C:/Users/peka8/UnityInAction/CompositePatternShapes/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.15f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

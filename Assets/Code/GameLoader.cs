@@ -9,6 +9,17 @@ public class GameLoader : MonoBehaviour
     public static UIController uiController;
     private void Start()
     {
+        ;
+
+        if (PlayerPrefs.HasKey("Score"))
+        {
+            Controller.totalScore = PlayerPrefs.GetInt("Score");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Score", 0);
+        }
+        
         CreateGame();
     }
 

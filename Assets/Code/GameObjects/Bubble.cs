@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -102,6 +103,11 @@ namespace Code
         public void rotate(Vector3 rotate)
         {
             _circle.rotate(rotate);
+        }
+
+        public virtual List<(IGameObject obj, float percents)> findObjectsToDelete(BallControllerSwitcher controllerSwitcher, float angle)
+        {
+            return controllerSwitcher.OnPlayerShot(this, angle);
         }
     }
 }

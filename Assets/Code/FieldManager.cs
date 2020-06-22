@@ -76,6 +76,7 @@ namespace Code
                 idToObj.Value.setActive = false;
             }
 
+            Controller.totalScore = 0;
             currentPlayerBall.setActive = false;
             currentPlayerBall = null;
             field.Clear();

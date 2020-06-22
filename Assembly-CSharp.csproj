@@ -61,23 +61,26 @@
     <Compile Include="Assets\Code\Animations\DynamicBallsRemoveAnimation.cs" />
     <Compile Include="Assets\Code\Animations\IAnimation.cs" />
     <Compile Include="Assets\Code\Camera.cs" />
+    <Compile Include="Assets\Code\ClusterFinderLogic.cs" />
     <Compile Include="Assets\Code\Controller.cs" />
     <Compile Include="Assets\Code\FieldManager.cs" />
     <Compile Include="Assets\Code\GameLoader.cs" />
-    <Compile Include="Assets\Code\GameManager.cs" />
     <Compile Include="Assets\Code\GameObjectData.cs" />
     <Compile Include="Assets\Code\GameObjects\Bubble.cs" />
     <Compile Include="Assets\Code\GameObjects\GameObjectsPool.cs" />
     <Compile Include="Assets\Code\GameObjects\IGameObject.cs" />
     <Compile Include="Assets\Code\GameObjects\UniversalBubble.cs" />
+    <Compile Include="Assets\Code\GameObjectsController\BallControllerSwitcher.cs" />
+    <Compile Include="Assets\Code\GameObjectsController\MagicBallController.cs" />
+    <Compile Include="Assets\Code\GameObjectsController\SimpleBallController.cs" />
     <Compile Include="Assets\Code\PointerEventsDispatcher.cs" />
+    <Compile Include="Assets\Code\SaveManager.cs" />
     <Compile Include="Assets\Code\Scene.cs" />
     <Compile Include="Assets\Code\Shape\Circle.cs" />
     <Compile Include="Assets\Code\Shape\ConvexShapeTriangulator.cs" />
     <Compile Include="Assets\Code\Shape\IShape.cs" />
     <Compile Include="Assets\Code\Shape\Rectangle.cs" />
     <Compile Include="Assets\Code\Shape\Triangle.cs" />
-    <Compile Include="Assets\Code\SimpleBallController.cs" />
     <Compile Include="Assets\Code\SITween.cs" />
     <Compile Include="Assets\Code\UI\MainHUD.cs" />
     <Compile Include="Assets\Code\UI\RestartWindow.cs" />
@@ -85,10 +88,9 @@
     <Compile Include="Assets\Code\UI\UIBase.cs" />
     <Compile Include="Assets\Code\UI\UIController.cs" />
     <Compile Include="Assets\Code\UnityHelper.cs" />
-    <Compile Include="Assets\Code\UniversalBallController.cs" />
-    <None Include="Assets\Code\AllColorsShader.shader" />
-    <None Include="Assets\Code\WaterShader.shader" />
-    <None Include="Assets\Code\Outline.shader" />
+    <None Include="Assets\Code\Shaders\AllColorsShader.shader" />
+    <None Include="Assets\Code\Shaders\WaterShader.shader" />
+    <None Include="Assets\Code\Shaders\Outline.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/peka8/OneDrive/Документы/GitHub/Balls-game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 namespace Code
@@ -15,6 +14,8 @@ namespace Code
         private Vector3 _lastMousePos;
 
         private bool _isEntered;
+        
+        private BallControllerSwitcher switcher = new BallControllerSwitcher();
 
         private void OnMouseDown()
         {
@@ -36,21 +37,12 @@ namespace Code
         {
             IGameObject playerBubble = FieldManager.Instance.currentPlayerBall;
 
-            List<(IGameObject obj, float percents)> bubblesToDelete;
-
-            if (playerBubble.type == BallsTypes.Universal)
-            {
-                bubblesToDelete = UniversalBallController.OnPlayerShot(playerBubble, arrowAngle);
-            }
-            else
-            {
-                bubblesToDelete = SimpleBallController.OnPlayerShot(playerBubble, arrowAngle);
-            }
+            List<(IGameObject obj, float percents)> bubblesToDelete = playerBubble.findObjectsToDelete(switcher, arrowAngle);
 
             void onCompletePlayerAnimation()
             {
                 playerBubble.animation.onCompleteAnimation -= onCompletePlayerAnimation;
-                GameManager.Instance.removeCluster(bubblesToDelete.Select(x => x.obj).ToList());
+                removeCluster(bubblesToDelete.Select(x => x.obj).ToList());
                 FieldManager.Instance.createPlayerBubble();
 
                 totalScore += bubblesToDelete.Count;
@@ -59,7 +51,7 @@ namespace Code
                 {
                     hasWon = false;
                     GameLoader.uiController.openWindow();
-                    PlayerPrefs.SetInt("Score", totalScore);
+                    SaveManager.Instance.bestScore = totalScore;
                     return;
                 }
 
@@ -67,7 +59,7 @@ namespace Code
                 {
                     hasWon = true;
                     GameLoader.uiController.openWindow();
-                    PlayerPrefs.SetInt("Score", totalScore);
+                    SaveManager.Instance.bestScore = totalScore;
                     return;
                 }
 
@@ -76,6 +68,16 @@ namespace Code
 
             playerBubble.animation.onCompleteAnimation += onCompletePlayerAnimation;
             playerBubble.animation.playAnimation(bubblesToDelete);
+        }
+        
+        
+        public void removeCluster(List<IGameObject> gameObjects)
+        {
+            foreach (IGameObject gameObject in gameObjects)
+            {
+                gameObject.setActive = false;
+                FieldManager.Instance.field.Remove(gameObject.id);
+            }
         }
 
 

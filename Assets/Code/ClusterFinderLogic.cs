@@ -1,29 +1,24 @@
-using System;
 using System.Collections.Generic;
 
 namespace Code
 {
-    public class GameManager
+    public class ClusterFinderLogic
     {
-        public static readonly GameManager Instance = new GameManager();
-        
+        public static readonly ClusterFinderLogic Instance = new ClusterFinderLogic();
+
         public Dictionary<int, bool> isChecked = new Dictionary<int, bool>();
 
         private readonly int[,] ODD_NEIGHBOURS = {{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, 0}, {-1, 1}};
         private readonly int[,] EVEN_NEIGHBOURS = {{0, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}};
 
-        public List<(IGameObject obj, float percents)> findFloatingClusters(int curentHeight)
+        public List<(IGameObject obj, float percents)> findFloatingClusters(int currentHeight)
         {
             removeCheckedFlag();
-            
+
             List<(IGameObject obj, float percents)> foundClusters = new List<(IGameObject obj, float percents)>();
-            foreach (KeyValuePair<int,IGameObject> idToObj in FieldManager.Instance.field)
+            foreach (KeyValuePair<int, IGameObject> idToObj in FieldManager.Instance.field)
             {
                 IGameObject gameObj = idToObj.Value;
-                if (gameObj.row == 0)
-                {
-                    continue;
-                }
 
                 if (gameObj.isRemoved)
                 {
@@ -43,7 +38,7 @@ namespace Code
 
                     foreach (IGameObject o in foundCluster)
                     {
-                        if (o.row==curentHeight)
+                        if (o.row == currentHeight)
                         {
                             floating = false;
                             break;
@@ -54,7 +49,7 @@ namespace Code
                     {
                         for (int i = 0; i < foundCluster.Count; i++)
                         {
-                            foundClusters.Add((foundCluster[i],1));
+                            foundClusters.Add((foundCluster[i], 1));
                         }
                     }
                 }
@@ -62,14 +57,13 @@ namespace Code
 
             return foundClusters;
         }
-        
+
         public List<IGameObject> findCluster(int row, int col, bool matchType, bool reset)
         {
             if (reset)
             {
                 removeCheckedFlag();
             }
-
 
             int[,] fieldMatrix = getFieldMatrix();
             int targetObjID = fieldMatrix[col, row];
@@ -78,7 +72,7 @@ namespace Code
             {
                 return new List<IGameObject>();
             }
-            
+
             IGameObject targetObj = FieldManager.Instance.field[targetObjID];
 
             Stack<int> processed = new Stack<int>();
@@ -115,62 +109,6 @@ namespace Code
                         }
                     }
                 }
-            }
-
-            return foundCluster;
-        }
-        
-        public List<IGameObject> findUniversalCluster(int row, int col, bool reset)
-        {
-            if (reset)
-            {
-                removeCheckedFlag();
-            }
-
-
-            int[,] fieldMatrix = getFieldMatrix();
-            int targetObjID = fieldMatrix[col, row];
-
-            if (targetObjID == -1)
-            {
-                return new List<IGameObject>();
-            }
-            
-            IGameObject targetObj = FieldManager.Instance.field[targetObjID];
-
-            Stack<int> processed = new Stack<int>();
-            processed.Push(targetObjID);
-            isChecked[targetObjID] = true;
-
-            List<IGameObject> foundCluster = new List<IGameObject>();
-
-            int times = 0;
-            while (processed.Count > 0 && times <= 12 )
-            {
-                times++;
-                int currentObjID = processed.Pop();
-                IGameObject currentObj = FieldManager.Instance.field[currentObjID];
-
-                if (currentObjID == -1)
-                {
-                    continue;
-                }
-
-                    foundCluster.Add(currentObj);
-
-                    List<int> neighboursIDs = getNeighbours(currentObj.col, currentObj.row, fieldMatrix);
-
-                    foreach (int id in neighboursIDs)
-                    {
-                        if (id != -1)
-                        {
-                            if (!isChecked[id])
-                            {
-                                processed.Push(id);
-                                isChecked[id] = true;
-                            }
-                        }
-                    }
             }
 
             return foundCluster;
@@ -249,42 +187,25 @@ namespace Code
         public int[,] getFieldMatrix()
         {
             int[,] matrix = new int[FieldManager.FIELD_WIDTH, FieldManager.maxHeight];
-            try
+
+            for (int col = 0; col < FieldManager.FIELD_WIDTH; col++)
             {
-                for (int col = 0; col < FieldManager.FIELD_WIDTH; col++)
+                for (int row = 0; row < FieldManager.maxHeight; row++)
                 {
-                    for (int row = 0; row < FieldManager.maxHeight; row++)
-                    {
-                        matrix[col, row] = -1;
-                    }
-                }
-
-                foreach (KeyValuePair<int, IGameObject> pair in FieldManager.Instance.field)
-                {
-                    try
-                    {
-                        if (pair.Value.isRemoved)
-                        {
-                            continue;
-                        }
-
-                        matrix[pair.Value.col, pair.Value.row] = pair.Key;
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                        throw;
-                    }
-
-
-
+                    matrix[col, row] = -1;
                 }
             }
-            catch (Exception e)
+
+            foreach (KeyValuePair<int, IGameObject> pair in FieldManager.Instance.field)
             {
-                Console.WriteLine(e);
-                throw;
+                if (pair.Value.isRemoved)
+                {
+                    continue;
+                }
+
+                matrix[pair.Value.col, pair.Value.row] = pair.Key;
             }
+
             return matrix;
         }
 
@@ -294,18 +215,6 @@ namespace Code
             {
                 isChecked[pair.Key] = false;
             }
-        }
-        
-        public void removeCluster(List<IGameObject> gameObjects)
-        {
-
-                foreach (IGameObject gameObject in gameObjects)
-                {
-                        gameObject.setActive = false;
-                        FieldManager.Instance.field.Remove(gameObject.id);
-                }
-
-
         }
     }
 }

@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,12 +7,15 @@ namespace Code
     public class RestartWindow : UIBase
     {
         [SerializeField] private GameObject _restartButton;
+        [SerializeField] private GameObject _resetScore;
         [SerializeField] private Text textField;
 
         public override void StartUI()
         {
             base.StartUI();
-            _restartButton.getOrAddComponent<PointerEventsDispatcher>().onClick += onClick;
+            
+            _restartButton.getOrAddComponent<PointerEventsDispatcher>().onClick += onRestartButtonClick;
+            _resetScore.getOrAddComponent<PointerEventsDispatcher>().onClick += onResetScoreButtonClick;
         }
 
         public override void OnOpen()
@@ -28,11 +30,16 @@ namespace Code
             }
         }
 
-        private void onClick(PointerEventData data)
+        private void onRestartButtonClick(PointerEventData data)
         {
             FieldManager.Instance.clearField();
             FieldManager.Instance.CreateField();
             gameObject.SetActive(false);
+        }
+        
+        private void onResetScoreButtonClick(PointerEventData data)
+        {
+
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code
 {
-    public class UniversalBallController
+    public static class MagicBallController
     {
         public static readonly float HID_DIST = FieldManager.CELL_WIDTH * 0.8f;
         private static float speed = 10f;
@@ -29,22 +29,22 @@ namespace Code
 
             float distance = playerAnimation.Last().y - playerBall.view.localPosition.y;
             List<(IGameObject obj, float percents)> cluster = null;
-            cluster = findBallsToDelete(arrowAngle, playerBall, playerBall.view.localPosition.x, playerBall.view.localPosition.y, 1,distance);
-            
+            cluster = findBallsToDelete(arrowAngle, playerBall, playerBall.view.localPosition.x, playerBall.view.localPosition.y, 1, distance);
+
             bubblesToDelete.Add((playerBall, 0));
 
             foreach ((IGameObject obj, float percents) info in cluster)
             {
                 info.obj.isRemoved = true;
-                GameManager.Instance.isChecked.Remove(info.obj.id);
+                ClusterFinderLogic.Instance.isChecked.Remove(info.obj.id);
                 bubblesToDelete.Add(info);
             }
 
-            List<(IGameObject obj, float percents)> floatingCluster = GameManager.Instance.findFloatingClusters(currentHeight);
-            foreach ((IGameObject obj, float percents) info  in floatingCluster)
+            List<(IGameObject obj, float percents)> floatingCluster = ClusterFinderLogic.Instance.findFloatingClusters(currentHeight);
+            foreach ((IGameObject obj, float percents) info in floatingCluster)
             {
                 info.obj.isRemoved = true;
-                GameManager.Instance.isChecked.Remove(info.obj.id);
+                ClusterFinderLogic.Instance.isChecked.Remove(info.obj.id);
                 bubblesToDelete.Add(info);
             }
 
@@ -214,87 +214,12 @@ namespace Code
                         }
                     }
 
-                    float percentes = ( tempY- playerBall.view.localPosition.y) / distance;
-                    bubblesToDelete.Add((obj,percentes));
+                    float percentes = (tempY - playerBall.view.localPosition.y) / distance;
+                    bubblesToDelete.Add((obj, percentes));
                 }
             }
 
             return bubblesToDelete;
-
-//            if (lowPointY == float.MaxValue || lowPointY == float.MinValue)
-//            {
-//                if (direction == -1 && (downBorderY - playerLineCoef) / Mathf.Tan(angle) > leftBorderX && (downBorderY - playerLineCoef) / Mathf.Tan(angle) < rightBorderX)
-//                {
-//                    lowPointY = downBorderY;
-//                    lowPointX = (lowPointY - playerLineCoef) / Mathf.Tan(angle);
-//                    pathTime = Mathf.Abs((lowPointY - y) / (speed * Mathf.Sin(angle)));
-//                    playerBall.animation.bubbleAnimation.Enqueue(new Vector3(lowPointX, lowPointY, pathTime));
-//                    return true;
-//                }
-//                else if (direction == 1 && (upperBorderY - playerLineCoef) / Mathf.Tan(angle) > leftBorderX && (upperBorderY - playerLineCoef) / Mathf.Tan(angle) < rightBorderX)
-//                {
-//                    if (maxHeight == FieldManager.LAST_VISIBLE_ROW)
-//                    {
-//                        lowPointY = upperBorderY;
-//                        lowPointX = (lowPointY - playerLineCoef) / Mathf.Tan(angle);
-//                        pathTime = Mathf.Abs((lowPointY - y) / (speed * Mathf.Sin(angle)));
-//                        playerBall.animation.bubbleAnimation.Enqueue(new Vector3(lowPointX, lowPointY, pathTime));
-//                    }
-//                    else
-//                    {
-//                        direction = -1;
-//                        lowPointY = upperBorderY;
-//                        lowPointX = (lowPointY - playerLineCoef) / Mathf.Tan(angle);
-//                        pathTime = Mathf.Abs((lowPointY - y) / (speed * Mathf.Sin(angle)));
-//                        playerBall.animation.bubbleAnimation.Enqueue(new Vector3(lowPointX, lowPointY, pathTime));
-//
-//                        return findPath(Mathf.PI - angle, playerBall, lowPointX, lowPointY, maxHeight, direction);
-//                    }
-//                }
-//                else if ((angle - Mathf.PI * 0.5f) * direction > 0)
-//                {
-//                    pathTime = Mathf.Abs((leftBorderX - x) / (speed * Mathf.Cos(angle)));
-//                    playerBall.animation.bubbleAnimation.Enqueue(new Vector3(leftBorderX, Mathf.Tan(angle) * (leftBorderX) + playerLineCoef, pathTime));
-//                    return findPath(Mathf.PI - angle, playerBall, leftBorderX, Mathf.Tan(angle) * (leftBorderX) + playerLineCoef, maxHeight, direction);
-//                }
-//                else if ((angle - Mathf.PI * 0.5f) * direction < 0)
-//                {
-//                    pathTime = Mathf.Abs((rightBorderX - x) / (speed * Mathf.Cos(angle)));
-//                    playerBall.animation.bubbleAnimation.Enqueue(new Vector3(rightBorderX, Mathf.Tan(angle) * (rightBorderX) + playerLineCoef, pathTime));
-//                    return findPath(Mathf.PI - angle, playerBall, rightBorderX, Mathf.Tan(angle) * (rightBorderX) + playerLineCoef, maxHeight, direction);
-//                }
-//                else if (angle == Mathf.PI / 2)
-//                {
-//                    pathTime = Mathf.Abs((y - lowPointY) / (speed * Mathf.Sin(angle)));
-//                    playerBall.animation.bubbleAnimation.Enqueue(new Vector3(FieldManager.Instance.playerStartPoint.x, upperBorderY, pathTime));
-//                    return findPath(Mathf.PI - angle, playerBall, FieldManager.Instance.playerStartPoint.x, upperBorderY, maxHeight, direction);
-//                }
-//            }
-//            else if (lowPointX < leftBorderX)
-//            {
-//                pathTime = Mathf.Abs((leftBorderX - x) / (speed * Mathf.Cos(angle)));
-//                playerBall.animation.bubbleAnimation.Enqueue(new Vector3(leftBorderX, Mathf.Tan(angle) * (leftBorderX) + playerLineCoef, pathTime));
-//                return findPath(Mathf.PI - angle, playerBall, leftBorderX, Mathf.Tan(angle) * (leftBorderX) + playerLineCoef, maxHeight, direction);
-//            }
-//            else if (lowPointX > rightBorderX)
-//
-//            {
-//                pathTime = Mathf.Abs((rightBorderX - x) / (speed * Mathf.Cos(angle)));
-//                playerBall.animation.bubbleAnimation.Enqueue(new Vector3(rightBorderX, Mathf.Tan(angle) * (rightBorderX) + playerLineCoef, pathTime));
-//                return findPath(Mathf.PI - angle, playerBall, rightBorderX, Mathf.Tan(angle) * (rightBorderX) + playerLineCoef, maxHeight, direction);
-//            }
-//            else if (angle == Mathf.PI / 2)
-//            {
-//                pathTime = Mathf.Abs((y - lowPointY) / (speed * Mathf.Sin(angle)));
-//                playerBall.animation.bubbleAnimation.Enqueue(new Vector3(FieldManager.Instance.playerStartPoint.x, lowPointY, pathTime));
-//            }
-//            else
-//            {
-//                pathTime = Mathf.Abs((x - lowPointX) / (speed * Mathf.Cos(angle)));
-//                playerBall.animation.bubbleAnimation.Enqueue(new Vector3(lowPointX, lowPointY, pathTime));
-//            }
-
-//            return false;
         }
     }
 }

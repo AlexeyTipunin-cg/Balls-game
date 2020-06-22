@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code
@@ -15,5 +16,6 @@ namespace Code
         void createShape(float radius ,float x, float y, Color32 color, GameObject parent);
         bool setActive { get; set; }
         void rotate(Vector3 rotate);
+        List<(IGameObject obj, float percents)> findObjectsToDelete(BallControllerSwitcher controllerSwitcher, float angle);
     }
 }

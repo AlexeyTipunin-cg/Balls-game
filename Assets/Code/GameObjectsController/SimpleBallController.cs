@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Code
 {
-    public class SimpleBallController
+    public static class SimpleBallController
     {
         public static readonly float HID_DIST = FieldManager.CELL_WIDTH * 0.8f;
         private static float speed = 10f;
 
-        public static List<(IGameObject obj, float percents) > OnPlayerShot(IGameObject playerBall, float arrowAngle)
+        public static List<(IGameObject obj, float percents)> OnPlayerShot(IGameObject playerBall, float arrowAngle)
         {
             bool isPop = findPath(arrowAngle, playerBall, playerBall.view.localPosition.x, playerBall.view.localPosition.y,
                 FieldManager.Instance.findCurrentMaxHeight(), 1);
@@ -32,7 +32,7 @@ namespace Code
 
                 List<(IGameObject obj, float percents)> cluster = null;
 
-                cluster = GameManager.Instance.findCluster((int) gridPosition.y, (int) gridPosition.x, playerBall.needMatchType, true).Select(x => (x, 1f)).ToList();
+                cluster = ClusterFinderLogic.Instance.findCluster((int) gridPosition.y, (int) gridPosition.x, playerBall.needMatchType, true).Select(x => (x, 1f)).ToList();
 
 
                 if (cluster.Count >= 3)
@@ -40,18 +40,17 @@ namespace Code
                     foreach ((IGameObject obj, float percents) info in cluster)
                     {
                         info.obj.isRemoved = true;
-                        GameManager.Instance.isChecked.Remove(info.obj.id);
+                        ClusterFinderLogic.Instance.isChecked.Remove(info.obj.id);
                         bubblesToDelete.Add(info);
                     }
 
-                    List<(IGameObject obj, float percents)> floatingCluster = GameManager.Instance.findFloatingClusters(currentHeight);
-                    foreach ((IGameObject obj, float percents) info  in floatingCluster)
+                    List<(IGameObject obj, float percents)> floatingCluster = ClusterFinderLogic.Instance.findFloatingClusters(currentHeight);
+                    foreach ((IGameObject obj, float percents) info in floatingCluster)
                     {
                         info.obj.isRemoved = true;
-                        GameManager.Instance.isChecked.Remove(info.obj.id);
+                        ClusterFinderLogic.Instance.isChecked.Remove(info.obj.id);
                         bubblesToDelete.Add(info);
                     }
-
                 }
             }
 
@@ -71,13 +70,10 @@ namespace Code
             float downBorderY = 0;
             float leftBorderX = FieldManager.CELL_WIDTH * 0.5f - 0.01f;
             float rightBorderX = Scene.Instance.sizeDeltaX - FieldManager.CELL_WIDTH * 0.5f - 0.01f;
-            IGameObject lowObj;
 
             float lowPointY;
             lowPointY = direction == 1 ? float.MaxValue : float.MinValue;
             float lowPointX = 0;
-
-            IGameObject hitObject;
 
             float tempX;
             float tempY;
@@ -143,8 +139,6 @@ namespace Code
                         {
                             lowPointX = tempX;
                             lowPointY = tempY;
-                            hitObject = obj;
-                            lowObj = obj;
                         }
                     }
                     else
@@ -154,8 +148,6 @@ namespace Code
                         {
                             lowPointX = FieldManager.Instance.playerStartPoint.x;
                             lowPointY = result1.y;
-                            hitObject = obj;
-                            lowObj = obj;
                         }
                     }
                 }

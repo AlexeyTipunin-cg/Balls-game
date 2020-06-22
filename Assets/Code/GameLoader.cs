@@ -9,21 +9,11 @@ public class GameLoader : MonoBehaviour
     public static UIController uiController;
     private void Start()
     {
-        ;
-
-        if (PlayerPrefs.HasKey("Score"))
-        {
-            Controller.totalScore = PlayerPrefs.GetInt("Score");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("Score", 0);
-        }
-        
-        CreateGame();
+        SaveManager saveManger = SaveManager.Instance;
+        StartGame();
     }
 
-    private void CreateGame()
+    private void StartGame()
     {
         FieldManager.Instance.CreateField();
         FieldManager.Instance.createWalls();

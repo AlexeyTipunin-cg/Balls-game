@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code
@@ -5,12 +6,12 @@ namespace Code
     public class UniversalBubble : Bubble
     {
         private static Shader _shaderDefault = Shader.Find("BubbleGame/AllColorsShader");
-        private static Material _material = new Material(_shaderDefault){renderQueue = 3500};
+        private static Material _material = new Material(_shaderDefault) {renderQueue = 3500};
         private static ParticleSystem starsPrortotype;
         private ParticleSystem _stars;
 
         private IAnimation _animation;
-        
+
         public override IAnimation animation
         {
             get
@@ -28,8 +29,8 @@ namespace Code
         {
             starsPrortotype = Resources.Load<ParticleSystem>("StarsEffect");
         }
-        
-        public UniversalBubble( BallsTypes type) : base(type)
+
+        public UniversalBubble(BallsTypes type) : base(type)
         {
             _stars = GameObject.Instantiate(starsPrortotype);
         }
@@ -37,12 +38,13 @@ namespace Code
 
         public override void createShape(float radius, float x, float y, Color32 color, GameObject parent)
         {
-            _circle = new Circle(radius ,x, y, color, parent, _material );
+            _circle = new Circle(radius, x, y, color, parent, _material);
             _circle.draw();
             _circle.attachParticles(_stars);
         }
 
         private bool isActive;
+
         public override bool setActive
         {
             get { return isActive; }
@@ -73,7 +75,10 @@ namespace Code
         {
             get { return false; }
         }
-        
-        
+
+        public override List<(IGameObject obj, float percents)> findObjectsToDelete(BallControllerSwitcher controllerSwitcher, float angle)
+        {
+            return controllerSwitcher.OnPlayerShot(this, angle);
+        }
     }
 }
